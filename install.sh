@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# 判断是否传入 AUTHKEY
 if [[ -z "$1" ]]; then
   echo "❌ 用法: bash install.sh <Tailscale AUTHKEY>"
   exit 1
@@ -9,22 +8,26 @@ fi
 
 AUTHKEY="$1"
 
-# 安装 tailscale
+echo "📦 正在安装 Tailscale..."
 curl -fsSL https://tailscale.com/install.sh | sh
 
-# 启动 tailscaled (内存模式)
-nohup tailscaled --state=mem: >/var/log/tailscaled.log 2>&1 &
+echo "🚀 启动 tailscaled (内存模式)..."
+sudo nohup tailscaled --state=mem: >/var/log/tailscaled.log 2>&1 &
+
 sleep 5
 
-# 加入网络并启用 SSH，使用传入的 AUTHKEY
-sudo tailscale up --auth-key=...
+echo "🔑 使用 AUTHKEY 加入 Tailscale 网络..."
+sudo tailscale up \
+  --auth-key="$AUTHKEY" \
   --hostname="ephemeral-server" \
-  --accept-routes --ssh
+  --accept-routes \
+  --ssh
 
-# 显示 IP
-echo "✅ 设备已上线，分配的 Tailscale IP："
-tailscale ip --4
+echo ""
+echo "✅ 已成功接入 Tailscale 网络"
+echo -n "📡 分配的 IPv4 地址："
+sudo tailscale ip --4
 
-# 可选：显示详细状态
+echo ""
 echo "📋 当前连接状态："
-tailscale status
+sudo tailscale status
