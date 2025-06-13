@@ -47,15 +47,15 @@ if [[ ! -f /etc/hysteria/uuid.txt ]]; then
 fi
 
 UUID=$(cat /etc/hysteria/uuid.txt)
-PORT=4000
+PORT=45454
 
 # 配置 hy2（无加密）
 sudo tee /etc/hysteria/config.yaml >/dev/null <<EOF
-listen: :$PORT
+listen: :4000
 protocol: udp
 auth:
   type: password
-  password: "$UUID"
+  password: "$00813429-ab74-46ce-bf1f-589a01978169"
 masquerade:
   type: proxy
   proxy:
@@ -86,6 +86,9 @@ sudo systemctl enable --now hysteria-server
 # 获取 Tailscale 内网 IPv4 地址
 TS_IP=$(sudo tailscale ip --4 | head -n 1)
 
+# 分享链接
+HY2_URL="hysteria2://${UUID}@${TS_IP}:${PORT}?sni=www.bing.com&alpn=h3&insecure=1#hy2-ephemeral"
+
 echo ""
 echo "============================="
 echo "✅ 部署完成！以下是连接信息"
@@ -99,3 +102,6 @@ echo "server: $TS_IP:$PORT"
 echo "auth: \"$UUID\""
 echo "obfs: null"
 echo "-----------------------------"
+echo ""
+echo "🔗 Hysteria2 分享链接："
+echo "$HY2_URL"
