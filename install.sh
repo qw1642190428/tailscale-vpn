@@ -17,7 +17,7 @@ nohup tailscaled --state=mem: >/var/log/tailscaled.log 2>&1 &
 sleep 5
 
 # 加入网络并启用 SSH，使用传入的 AUTHKEY
-tailscale up --auth-key="$AUTHKEY" \
+sudo tailscale up --auth-key=...
   --hostname="ephemeral-server" \
   --accept-routes --ssh
 
