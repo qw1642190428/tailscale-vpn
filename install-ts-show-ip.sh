@@ -2,7 +2,7 @@
 set -e
 
 # 请替换为你生成的 Reusable Ephemeral Auth Key
-AUTHKEY="tskey-xxxxxxxxxxxxxxx?ephemeral=true&reusable=true"
+AUTHKEY="tskey-auth-kzfTtbX8aZ11CNTRL-g5R7W3PUQ2Si6m5ZJEqM2Sdu6kq3a9rk?ephemeral=true&reusable=true"
 
 # 安装 Tailscale
 curl -fsSL https://tailscale.com/install.sh | sh
